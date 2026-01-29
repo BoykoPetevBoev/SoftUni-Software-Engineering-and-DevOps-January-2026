@@ -17,7 +17,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: GiHub-Actions-Student-Registry-App
+        working-directory: GitHub-Actions-Student-Registry-App
 
     steps:
     - name: Checkout code
@@ -28,12 +28,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    
+        cache-dependency-path: GitHub-Actions-Student-Registry-App/package-lock.json
+
     - name: Install dependencies
       run: npm ci
     
     - name: Start app 
-      run: npm run start
+      run: npm start
 
     - name: Run tests
       run: npm test
