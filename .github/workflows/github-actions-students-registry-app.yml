@@ -40,8 +40,10 @@ jobs:
     if: github.ref == 'refs/heads/github-actions-students-registry-app' && github.event_name == 'push'
 
     steps:
-    - uses: JorgeLNJunior/render-deploy@v1.4.7
+    - name: Deploy to Render.com
+      uses: JorgeLNJunior/render-deploy@v1.4.7
       with:
         service_id: ${{ secrets.STUDENT_REGISTRY_APP_RENDER_SERVICE_ID }}
         api_key: ${{ secrets.STUDENT_REGISTRY_APP_RENDER_API_KEY }}
         github_token: ${{ github.token }}
+        wait_deploy: true
