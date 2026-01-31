@@ -1,0 +1,41 @@
+name: Build and Test .NET App
+
+on:
+  push:
+    branches: [ "github-actions-selenium-web-driver" ]
+  pull_request:
+    branches: [ "github-actions-selenium-web-driver" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: GitHub-Actions-SeleniumWebDriver
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    
+    - name: Install Google Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test Project 1
+      run: dotnet test TestProject1/TestProject1.csproj --no-build --verbosity normal
+
+    - name: Test Project 2
+      run: dotnet test TestProject2/TestProject2.csproj --no-build --verbosity normal
+
+    - name: Test Project 3
+      run: dotnet test TestProject3/TestProject3.csproj --no-build --verbosity normal
