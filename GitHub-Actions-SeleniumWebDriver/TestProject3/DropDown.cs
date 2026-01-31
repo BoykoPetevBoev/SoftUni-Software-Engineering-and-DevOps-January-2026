@@ -11,8 +11,7 @@ namespace TestProject3
     public class WorkingWithDropDown
     {
         IWebDriver driver;
-
-        private ChromeOptions options;
+        ChromeOptions options;
 
         [SetUp]
         public void SetUp()

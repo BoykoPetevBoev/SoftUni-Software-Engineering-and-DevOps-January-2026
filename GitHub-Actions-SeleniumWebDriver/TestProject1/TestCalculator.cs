@@ -16,8 +16,7 @@ namespace TestProject1
         IWebElement calcBtn;
         IWebElement resetBtn;
         IWebElement divResult;
-
-        private ChromeOptions options;
+        ChromeOptions options;
 
         [OneTimeSetUp]
         public void SetUp()

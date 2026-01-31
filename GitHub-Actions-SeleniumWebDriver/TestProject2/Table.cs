@@ -9,8 +9,7 @@ namespace TestProject2
     public class WorkingWithWebTable
     {
         IWebDriver driver;
-        
-        private ChromeOptions options;
+        ChromeOptions options;
 
         [SetUp]
         public void SetUp()
