@@ -23,7 +23,7 @@ jobs:
         node-version: 20.x
 
     - name: Install dependencies
-      run: npm run install
+      run: npm install
 
     - name: Install Playwright Browser
       run: npx playwright install
