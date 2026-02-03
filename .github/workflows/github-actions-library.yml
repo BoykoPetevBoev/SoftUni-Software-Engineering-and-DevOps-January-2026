@@ -28,11 +28,11 @@ jobs:
     - name: Install Playwright Browser
       run: npx playwright install
 
-    - name: Run tests
-      run: npm run test
-
     - name: Run backend
       run: npm run server &
-
+      
     - name: Run client
       run: npm run start &
+
+    - name: Run tests
+      run: npm run test
