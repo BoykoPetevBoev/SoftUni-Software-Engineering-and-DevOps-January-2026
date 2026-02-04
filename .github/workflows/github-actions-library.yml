@@ -28,6 +28,9 @@ jobs:
     - name: Install Playwright Browser
       run: npx playwright install
 
+    - name: Manually change config for tests
+      run: echo "export const settings = { host:\"http://localhost:3030\" };" > src/config.js
+
     - name: Run backend
       run: npm run server &
       
@@ -36,3 +39,31 @@ jobs:
 
     - name: Run tests
       run: npm run test
+
+  deploy_be:
+    needs: build
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/github-actions-library' && github.event_name == 'push'
+    steps:
+    - name: Deploy to Render.com
+      uses: JorgeLNJunior/render-deploy@v1.4.7
+      with:
+        service_id: ${{ secrets.LIBRARY_BE_SERVICE_ID }}
+        api_key: ${{ secrets.LIBRARY_API_KEY }}
+        github_token: ${{ github.token }}
+        wait_deploy: true      
+
+  deploy_fe:
+    needs: build
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/github-actions-library' && github.event_name == 'push'
+    steps:
+    - name: Deploy to Render.com
+      uses: JorgeLNJunior/render-deploy@v1.4.7
+      with:
+        service_id: ${{ secrets.LIBRARY_FE_SERVICE_ID }}
+        api_key: ${{ secrets.LIBRARY_API_KEY }}
+        github_token: ${{ github.token }}
+        wait_deploy: true      
