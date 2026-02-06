@@ -8,14 +8,23 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage("Install dependencies") {
             steps {
-                sh "npm install"
+                dir('exercise') {
+                    sh 'npm install'
+                }
             }
         }
         stage("Run tests") {
             steps {
-                sh "npm test"
+                dir('exercise') {
+                    sh 'npm test'
+                }
             }
         }
     }
