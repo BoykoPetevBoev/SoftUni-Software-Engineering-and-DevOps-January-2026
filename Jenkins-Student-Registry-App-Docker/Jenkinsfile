@@ -15,14 +15,14 @@ pipeline {
         }
         stage("Install dependencies") {
             steps {
-                dir('exercise') {
+                dir('Jenkins-Student-Registry-App-Docker') {
                     sh 'npm install'
                 }
             }
         }
         stage("Run tests") {
             steps {
-                dir('exercise') {
+                dir('Jenkins-Student-Registry-App-Docker') {
                     sh 'npm test'
                 }
             }
