@@ -1,0 +1,44 @@
+pipeline {
+    agent {
+        docker {
+            image 'mcr.microsoft.com/dotnet/sdk:8.0'
+            args '-u root'
+            reuseNode true
+        }
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+        stage("Install dependencies") {
+            steps {
+                dir('Jenkins-House-Renting-System-App') {
+                    sh 'dotnet restore'
+                }
+            }
+        }
+        stage("Build Solution") {
+            steps {
+                dir('Jenkins-House-Renting-System-App') {
+                    sh 'dotnet build'
+                }
+            }
+        }
+        stage("Run tests") {
+            steps {
+                dir('Jenkins-House-Renting-System-App') {
+                    sh 'dotnet test'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Workflow completed.'
+        }
+    }
+}
