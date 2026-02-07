@@ -17,6 +17,9 @@ namespace TestProject2
             // Create object of ChromeDriver
             options = new ChromeOptions();
             options.AddArgument("--headless=new");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--disable-dev-shm-usage");
+            options.AddArgument("--disable-gpu");  
             driver = new ChromeDriver(options);
 
             // Add implicit wait
