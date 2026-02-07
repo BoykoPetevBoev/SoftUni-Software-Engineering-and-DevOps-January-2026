@@ -1,0 +1,75 @@
+pipeline {
+    agent {
+        docker {
+            image 'mcr.microsoft.com/dotnet/sdk:8.0'
+            args '-u root'
+            reuseNode true
+        }
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+        stage("Install dependencies") {
+            steps {
+                dir('Jenkins-SeleniumWebDriver') {
+                    sh 'dotnet restore'
+                }
+            }
+        }
+        stage('Install Google Chrome') {
+            steps {
+                sh '''
+                apt-get update
+                apt-get install -y wget gnupg
+                wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-linux-keyring.gpg
+                echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
+                    > /etc/apt/sources.list.d/google-chrome.list
+                apt-get update
+                apt-get install -y google-chrome-stable
+                '''
+            }
+        }
+        stage("Build Solution") {
+            steps {
+                dir('Jenkins-SeleniumWebDriver') {
+                    sh 'dotnet build'
+                }
+            }
+        }
+        stage("Run tests") {
+            parallel {
+                stage("Run tests for Project 1") {
+                    steps {
+                        dir('Jenkins-SeleniumWebDriver') {
+                            sh 'dotnet test TestProject1/TestProject1.csproj --no-build --verbosity normal'
+                        }
+                    }
+                }
+                stage("Run tests for Project 2") {
+                    steps {
+                        dir('Jenkins-SeleniumWebDriver') {
+                            sh 'dotnet test TestProject2/TestProject2.csproj --no-build --verbosity normal'
+                        }
+                    }
+                }
+                stage("Run tests for Project 3") {
+                    steps {
+                        dir('Jenkins-SeleniumWebDriver') {
+                            sh 'dotnet test TestProject3/TestProject3.csproj --no-build --verbosity normal'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Workflow completed.'
+        }
+    }
+}
